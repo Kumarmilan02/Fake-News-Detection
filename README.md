@@ -1,4 +1,4 @@
-# Fake News Detection
+# Fake News Detection : [FactScan Live Demo](https://factscan.streamlit.app/)
 
 ## Project Description
 
