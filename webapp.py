@@ -70,7 +70,7 @@ def predict_news(text, model, vectorizer):
 st.markdown("""
     <style>
     :root {
-        --background-light: #f0f2f6;
+        --background-light: #87CEFA; /* Light Sky Blue */
         --background-dark: #1e1e1e;
         --text-light: #333;
         --text-dark: #ffffff;
