@@ -16,9 +16,9 @@ from sklearn.base import is_classifier
 # Load the trained model and vectorizer
 def load_model_and_vectorizer():
     try:
-        with open(r'C:/Users/KIIT/Downloads/model1.pkl', 'rb') as model_file:
+        with open(r'model/model1.pkl', 'rb') as model_file:
             model = pickle.load(model_file)
-        with open(r'C:/Users/KIIT/Downloads/vectorizer1.pkl', 'rb') as vectorizer_file:
+        with open(r'model/vectorizer1.pkl', 'rb') as vectorizer_file:
             vectorizer = pickle.load(vectorizer_file)
         if not is_classifier(model):
             raise TypeError("Loaded model is not a classifier.")
@@ -45,13 +45,21 @@ def predict_news(text, model, vectorizer):
 # Set up the Streamlit app
 st.set_page_config(
     page_title="Fake News Detection",
-    page_icon="C:/Users/KIIT/Downloads/logo.jpg",
+    page_icon="📰",
     layout="wide"
 )
 
 # Apply custom CSS styling
 st.markdown("""
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+    body {
+        background: linear-gradient(135deg, #f0f2f6 0%, #dfe9f3 100%);
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+    }
+
     .main {
         background-color: #f0f2f6;
         color: #333;
@@ -59,39 +67,54 @@ st.markdown("""
     .title {
         color: #1f77b4;
         font-size: 2.5em;
+        font-weight: bold;
+        text-align: center;
     }
     .input-section {
         background-color: #ffffff;
         border-radius: 8px;
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        padding: 30px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        margin-top: 30px;
     }
     .predict-btn {
         background-color: #1f77b4;
         color: white;
         border-radius: 8px;
-        padding: 10px;
+        padding: 12px;
         font-size: 1.2em;
+        width: 100%;
+        transition: background-color 0.3s ease;
+        border: none;
+        cursor: pointer;
     }
     .predict-btn:hover {
         background-color: #155a8a;
     }
     .output {
         font-size: 1.5em;
+        font-weight: bold;
+        margin-top: 20px;
+        text-align: center;
+    }
+    .output-icon {
+        font-size: 2em;
+        margin-right: 10px;
     }
     </style>
     """, unsafe_allow_html=True)
 
-st.write("<h1 class='title'>Fake News Detection</h1>", unsafe_allow_html=True)
-st.markdown(
-    """
-    <div class='input-section'>
-    <h2>Input:</h2>
-    <p>Enter your text below to predict whether it's fake or real news.</p>
-    </div>
-    """, unsafe_allow_html=True
-)
+# App Title
+st.write("<h1 class='title'>📰 Fake News Detection</h1>", unsafe_allow_html=True)
 
+# Input Section
+st.markdown("""
+    <div class='input-section'>
+    <h2>📝 Input:</h2>
+    <p>Enter your text below to predict whether it's fake or real news.</p>
+    """, unsafe_allow_html=True)
+
+# Text Area for User Input
 text = st.text_area(
     label="Enter your text to try it.",
     placeholder="Enter your text to predict whether this is fake or not.",
@@ -103,13 +126,15 @@ st.write(f'You wrote {len(text.split())} words.')
 # Load model and vectorizer
 model, vectorizer = load_model_and_vectorizer()
 
-# Predict button
+# Predict Button
 if st.button("Predict", key='predict-btn'):
     st.markdown("<div class='output'>## Output:</div>", unsafe_allow_html=True)
     result = predict_news(text, model, vectorizer)
+    
+    # Display Prediction Result
     if result == "REAL":
-        st.markdown("<div class='output'>#### Looking Real News 📰</div>", unsafe_allow_html=True)
+        st.markdown("<div class='output'><span class='output-icon'>📰✅</span> Looking Real News 📰</div>", unsafe_allow_html=True)
     elif result == "FAKE":
-        st.markdown("<div class='output'>#### Looking Fake News ⚠️📰</div>", unsafe_allow_html=True)
+        st.markdown("<div class='output'><span class='output-icon'>⚠️📰</span> Looking Fake News ⚠️📰</div>", unsafe_allow_html=True)
     else:
         st.markdown(f"<div class='output'>{result}</div>", unsafe_allow_html=True)
