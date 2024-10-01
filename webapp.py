@@ -12,6 +12,19 @@ from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.base import is_classifier
+import nltk
+
+# Ensure NLTK stopwords are downloaded
+def download_nltk_resources():
+    try:
+        stopwords.words('english')
+    except LookupError:
+        st.info("Downloading NLTK stopwords...")
+        nltk.download('stopwords')
+        st.success("NLTK stopwords downloaded successfully!")
+
+# Call the function to download resources if not already available
+download_nltk_resources()
 
 # Load the trained model and vectorizer
 def load_model_and_vectorizer():
@@ -34,9 +47,13 @@ def predict_news(text, model, vectorizer):
     if model is None or vectorizer is None:
         return "Error: Model or vectorizer not loaded."
     
+    # Obtain additional stopwords
+    stop_words = stopwords.words('english')
+    stop_words.extend(['from', 'subject', 're', 'edu', 'use'])
+
     text_cleaned = re.sub(r'\W', ' ', text)
     text_cleaned = text_cleaned.lower()
-    text_cleaned = ' '.join([PorterStemmer().stem(word) for word in text_cleaned.split() if word not in stopwords.words('english')])
+    text_cleaned = ' '.join([PorterStemmer().stem(word) for word in text_cleaned.split() if word not in stop_words])
     
     text_vectorized = vectorizer.transform([text_cleaned])
     prediction = model.predict(text_vectorized)
@@ -55,30 +72,26 @@ st.markdown("""
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
     body {
-        background: linear-gradient(135deg, #f0f2f6 0%, #dfe9f3 100%);
+        background: linear-gradient(135deg, #a2c2e5 0%, #e1f4e1 100%);
         font-family: 'Roboto', sans-serif;
         color: #333;
     }
 
-    .main {
-        background-color: #f0f2f6;
-        color: #333;
-    }
     .title {
-        color: #1f77b4;
+        color: #3e7b99;
         font-size: 2.5em;
         font-weight: bold;
         text-align: center;
     }
     .input-section {
         background-color: #ffffff;
-        border-radius: 8px;
+        border-radius: 10px;
         padding: 30px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         margin-top: 30px;
     }
     .predict-btn {
-        background-color: #1f77b4;
+        background-color: #3e7b99;
         color: white;
         border-radius: 8px;
         padding: 12px;
@@ -89,7 +102,7 @@ st.markdown("""
         cursor: pointer;
     }
     .predict-btn:hover {
-        background-color: #155a8a;
+        background-color: #2a4d61;
     }
     .output {
         font-size: 1.5em;
