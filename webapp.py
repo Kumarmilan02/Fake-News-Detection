@@ -69,29 +69,44 @@ def predict_news(text, model, vectorizer):
 # Apply custom CSS styling
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+    :root {
+        --background-light: #f0f2f6;
+        --background-dark: #1e1e1e;
+        --text-light: #333;
+        --text-dark: #ffffff;
+        --primary-light: #3e7b99;
+        --primary-dark: #2a4d61;
+        --input-background: #ffffff;
+        --input-background-dark: #2c2c2c;
+        --output-success: #d4edda;
+        --output-danger: #f8d7da;
+    }
 
     body {
-        background: linear-gradient(135deg, #a2c2e5 0%, #e1f4e1 100%);
-        font-family: 'Roboto', sans-serif;
-        color: #333;
+        background-color: var(--background-light);
+        color: var(--text-light);
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .streamlit-expanderHeader {
+        color: var(--text-light);
     }
 
     .title {
-        color: #3e7b99;
+        color: var(--primary-light);
         font-size: 2.5em;
         font-weight: bold;
         text-align: center;
     }
     .input-section {
-        background-color: #ffffff;
+        background-color: var(--input-background);
         border-radius: 10px;
         padding: 30px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         margin-top: 30px;
     }
     .predict-btn {
-        background-color: #3e7b99;
+        background-color: var(--primary-light);
         color: white;
         border-radius: 8px;
         padding: 12px;
@@ -102,7 +117,7 @@ st.markdown("""
         cursor: pointer;
     }
     .predict-btn:hover {
-        background-color: #2a4d61;
+        background-color: var(--primary-dark);
     }
     .output {
         font-size: 1.5em;
