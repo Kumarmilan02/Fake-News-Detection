@@ -14,6 +14,13 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.base import is_classifier
 import nltk
 
+# Set up the Streamlit app
+st.set_page_config(
+    page_title="Fake News Detection",
+    page_icon="📰",
+    layout="wide"
+)
+
 # Ensure NLTK stopwords are downloaded
 def download_nltk_resources():
     try:
@@ -58,13 +65,6 @@ def predict_news(text, model, vectorizer):
     text_vectorized = vectorizer.transform([text_cleaned])
     prediction = model.predict(text_vectorized)
     return 'FAKE' if prediction[0] == 0 else 'REAL'
-
-# Set up the Streamlit app
-st.set_page_config(
-    page_title="Fake News Detection",
-    page_icon="📰",
-    layout="wide"
-)
 
 # Apply custom CSS styling
 st.markdown("""
